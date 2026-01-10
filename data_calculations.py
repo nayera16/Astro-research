@@ -144,7 +144,7 @@ def main(input_csv, output_csv):
         'logL1350', 'logL1350_err', 'CIV_blueshift_kms', 
         'CIV_asym', 'logMBH_CIV', 'logMBH_CIV_err', 
         'FWHM_CIV_corr_blueshift','logMBH_CIV_corr_blueshift',
-        'FWHM_CIV_corr_asym','logMBH_CIV_corr_asym'
+        'FWHM_CIV_corr_asym','logMBH_CIV_corr_asym', "log_mass_ratio_CIV_Hb"
     ]
 
     # Initial empty params
@@ -190,13 +190,27 @@ def main(input_csv, output_csv):
         df.loc[idx, "logMBH_CIV_corr_blueshift"] = logM_corr_bs
         df.loc[idx, "FWHM_CIV_corr_asym"] = FWHM_corr_as
         df.loc[idx, "logMBH_CIV_corr_asym"] = logM_corr_as
+        if np.isfinite(df.loc[idx, "logMBH_CIV"]) and np.isfinite(df.loc[idx, "logMBH_Hb"]):
+            df.loc[idx, "log_mass_ratio_CIV_Hb"] = (
+                df.loc[idx, "logMBH_CIV"] - df.loc[idx, "logMBH_Hb"]
+            )
 
     # Write output
     df.to_csv(output_csv, index=False)
     print(f"Saved results to {output_csv}")
+
+    # Only use rows with both masses
+    dfr = df[
+        np.isfinite(df["logMBH_CIV"]) &
+        np.isfinite(df["logMBH_Hb"]) &
+        np.isfinite(df["CIV_blueshift_kms"]) &
+        np.isfinite(df["CIV_asym"])
+    ].copy()
+ 
 
 
 if __name__ == "__main__":
     input_csv  = base_path + "Target_lists/target_list_info_for_calc.csv"
     output_csv = base_path + "Target_lists/civ_output_with_derived.csv"
     main(input_csv, output_csv)
+
