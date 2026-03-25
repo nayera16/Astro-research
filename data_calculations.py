@@ -107,7 +107,11 @@ def bhm_civ_error(logL1350_err, FWHM, FWHM_err):
     term_L = B * logL1350_err
     term_F = (C / (LN10 * FWHM)) * FWHM_err
 
-    return np.sqrt(term_L**2 + term_F**2)
+    sigma_stat = np.sqrt(term_L**2 + term_F**2)
+
+    # sigma_total = np.sqrt(sigma_stat**2 + 0.4**2) # Add 0.4 dex systematic uncertainty in quadrature (typical for single-epoch BH masses)
+
+    return sigma_stat
 
 # Correction functions for blueshift and asymmetry
 

@@ -128,7 +128,70 @@ ax7.set_ylim(3.2, 3.8)
 xmin, xmax = ax7.get_xlim()
 line = np.linspace(xmin, xmax, 100)
 ax7.plot(line, line, linestyle=":", color="black", linewidth=1.2)
+ax7.legend(["1:1 line", "Uncorrected C IV", "Corrected C IV"], loc="upper right", fontsize=12)
 
 plt.tight_layout()
 fig7.savefig("logFWHM_Hb_vs_logFWHM_CIV_corrEq6.png", dpi=300, bbox_inches="tight")
 print("Saved: logFWHM_Hb_vs_logFWHM_CIV_corrEq6.png")
+
+# ---------------------------------------------------------
+# Figure 8-style: log Hβ_Mbh vs log CIV_Mbh
+# (red diamonds = corrected log CIV_Mbh using Eq. 6)
+# ---------------------------------------------------------
+dff = df[
+    np.isfinite(df["logMBH_CIV"]) &
+    np.isfinite(df["logMBH_CIV_err"]) &
+    np.isfinite(df["logMBH_CIV_corr_blueshift"]) &
+    np.isfinite(df["logMBH_Hb"]) &
+    np.isfinite(df["logMBH_Hb_err"])
+].copy()
+
+# log values
+x = (dff["logMBH_CIV"].to_numpy())
+x_corr = (dff["logMBH_CIV_corr_blueshift"].to_numpy())
+y = (dff["logMBH_Hb"].to_numpy())
+
+# convert linear errors to dex errors
+xerr = dff["logMBH_CIV_err"].to_numpy()
+xerr_corr = dff["logMBH_CIV_err"].to_numpy()
+yerr = dff["logMBH_Hb_err"].to_numpy()
+
+fig7 = plt.figure(figsize=(6, 5))
+ax7 = fig7.add_subplot(111)
+
+# black circles (uncorrected CIV)
+ax7.errorbar(
+    x, y,
+    xerr=xerr, yerr=yerr,
+    fmt="o", ms=7,
+    mfc="black", mec="black",
+    ecolor="black", elinewidth=1.2, capsize=3,
+    linestyle="none"
+)
+
+# red open diamonds (corrected CIV)
+ax7.errorbar(
+    x_corr, y,
+    xerr=xerr_corr, yerr=yerr,
+    fmt="D", ms=7,
+    mfc="none", mec="red",
+    ecolor="red", elinewidth=1.2, capsize=3,
+    linestyle="none"
+)
+
+ax7.set_xlabel(r"$\log\,\mathrm{MBH}_{\rm C\,IV}\ (\mathrm{M_\odot})$")
+ax7.set_ylabel(r"$\log\,\mathrm{MBH}_{\rm H\beta}\ (\mathrm{M_\odot})$")
+
+# Match Zuo-ish axis bounds (adjust if your sample pushes outside)
+ax7.set_xlim(8.5, 10.0)
+ax7.set_ylim(8.5, 10.0)
+
+# 1:1 correlation line (dotted)
+xmin, xmax = ax7.get_xlim()
+line = np.linspace(xmin, xmax, 100)
+ax7.plot(line, line, linestyle=":", color="black", linewidth=1.2)
+ax7.legend(["1:1 line", "Uncorrected C IV", "Corrected C IV"], loc="upper right", fontsize=12)
+
+plt.tight_layout()
+fig7.savefig("logMBH_Hb_vs_logMBH_CIV_corrEq6.png", dpi=300, bbox_inches="tight")
+print("Saved: logMBH_Hb_vs_logMBH_CIV_corrEq6.png")
