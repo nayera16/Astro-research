@@ -179,8 +179,8 @@ ax7.errorbar(
     linestyle="none"
 )
 
-ax7.set_xlabel(r"$\log\,\mathrm{MBH}_{\rm C\,IV}\ (\mathrm{M_\odot})$")
-ax7.set_ylabel(r"$\log\,\mathrm{MBH}_{\rm H\beta}\ (\mathrm{M_\odot})$")
+ax7.set_xlabel(r"$\log\,\mathrm{M_{BH} } {\rm (C\,IV)}\ (\mathrm{M_\odot})$")
+ax7.set_ylabel(r"$\log\,\mathrm{M_{BH} } {\rm (H\beta)}\ (\mathrm{M_\odot})$")
 
 # Match Zuo-ish axis bounds (adjust if your sample pushes outside)
 ax7.set_xlim(8.5, 10.0)
