@@ -4,3 +4,8 @@
 *.jpeg
 *.pptx
 *.jpg
+*.gif
+*.webp
+*.mp4
+*.pyc
+.DS_Store
