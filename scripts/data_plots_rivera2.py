@@ -5,7 +5,7 @@ import numpy as np
 # import richardsplot as rplot
 # from sklearn.preprocessing import scale
 
-from CIVfunctions import project, CIV_distance
+from scripts.CIVfunctions_parallel import project, CIV_distance
 
 csv_path = "/Users/nayera/PyQSOFit/Target_lists/civ_output_with_derived.csv"
 dat = pd.read_csv(csv_path)
