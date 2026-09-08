@@ -73,6 +73,8 @@ def main():
         np.isfinite(df["fwhm_hb_err"]) &
         np.isfinite(df["CIV_blueshift_kms"]) &
         np.isfinite(df["CIV_asym"]) &
+        np.isfinite(df["CIV_asym_err_mcmc"]) &
+        (df["CIV_asym_err_mcmc"] > 0) &
         (df["CIV_blueshift_kms"] > 0)
     )
     dff = df[fit_mask].copy()
@@ -93,7 +95,7 @@ def main():
 
     # asymmetry fit equation x-axis: AS_CIV 
     x_as = dff["CIV_asym"].to_numpy()
-    xsig_as = np.full_like(x_as, 1e-6) #negligible
+    xsig_as = dff["CIV_asym_err_mcmc"].to_numpy()
 
     # Run linmix fits 
     alpha_bs, alpha_bs_err, beta_bs, beta_bs_err = run_linmix(x_bs, ratio, xsig_bs, ratio_err )

@@ -64,15 +64,17 @@ def blueshift_calc(lam_half, lam_lab=LAM_LAB_CIV):
 def asym_calc(lam_blue, lam_red, lam_peak):
     """
     Use Zuo+2020 asymmetry calculation:
-        A_S = ln[ (lam_red - lam_peak) / (lam_peak - lam_blue) ]
+        A_S = ln(lam_red / lam_peak) / ln(lam_blue / lam_peak)
 
     Returns np.nan if the input is invalid.
     """
-    num = lam_red - lam_peak
-    den = lam_peak - lam_blue
-    if num <= 0 or den <= 0:
+    if lam_blue <= 0 or lam_red <= 0 or lam_peak <= 0:
         return np.nan
-    return np.log(num / den)
+    num = np.log(lam_red / lam_peak)
+    den = np.log(lam_blue / lam_peak)
+    if den == 0:
+        return np.nan
+    return num / den
 
 def bhm_civ_calc(logL1350, FWHM):
     """
